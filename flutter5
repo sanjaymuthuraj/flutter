@@ -1,0 +1,83 @@
+import 'package:flutter/material.dart';
+void main() {
+  runApp(const MyApp());
+}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),);
+  } }
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  void _login() {
+    String username = _usernameController.text.trim();
+    String password = _passwordController.text.trim();
+    if (username.isEmpty || password.isEmpty) {
+      _showAlert("Error", "Please enter Username and Password");
+    } else {
+      _showAlert("Success", "Login Successful!\nWelcome $username");
+    }  }
+  void _showAlert(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("OK"),
+            ), ],
+        ); },
+    ); }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Login",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 30),
+              TextField(
+                controller: _usernameController,
+                decoration: const InputDecoration(
+                  hintText: "Enter Username",
+                  border: OutlineInputBorder(),
+                ), ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  hintText: "Enter Password",
+                  border: OutlineInputBorder(),
+                ), ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: _login,
+                child: const Text("Login"),
+              ), ],
+          ), ),
+      ), );
+  } }
